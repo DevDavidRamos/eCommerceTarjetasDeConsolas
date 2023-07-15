@@ -14,8 +14,6 @@ import com.darvdev.ecommerce.ui.utils.hideKeyboard
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
-
-
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 

@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">eCommerce</string>
+    <string name="app_name">Keep playing!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
     <string name="cart__label">Carrito</string>
     <string name="home__label">Inicio</string>
     <string name="profile__label">Perfil</string>
     <string name="search__label">Buscar</string>
     <string name="search__search_field_hint">Encontrar productos</string>
-
+    <string name="empty_state__empty_search_disclaimer">No se encontraron productos, prueba con una busqueda distinta</string>
+    <string name="search_result__error_disclaimer">Hubo un error obteniendo los productos, pruebe de nuevo mas tarde</string>
+    <string name="empty_state__empty_results">0 resultados</string>
 </resources>

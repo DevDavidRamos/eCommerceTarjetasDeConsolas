@@ -6,6 +6,8 @@ import com.darvdev.ecommerce.domain.model.INVALID_PRICE
 import com.darvdev.ecommerce.domain.model.Product
 import com.darvdev.ecommerce.domain.ui.ProductUi
 
+
+
 @Entity
 data class ProductEntity(
     @PrimaryKey
