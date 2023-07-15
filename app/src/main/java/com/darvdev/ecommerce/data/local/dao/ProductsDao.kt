@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Transaction
 import com.darvdev.ecommerce.data.local.entity.ProductEntity
 @Dao
 interface ProductsDao {
@@ -13,5 +14,15 @@ interface ProductsDao {
 
     @Insert(onConflict = REPLACE)
     fun insertAllProducts(list: List<ProductEntity>)
+
+
+    @Query("DELETE FROM productentity")
+     fun nukeTable()
+    @Transaction
+    fun updateAllProducts(list: List<ProductEntity>){
+        nukeTable()
+        insertAllProducts(list)
+
+    }
 
 }

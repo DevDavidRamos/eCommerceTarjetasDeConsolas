@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.darvdev.ecommerce.R
 import com.darvdev.ecommerce.databinding.FragmentSearchResultBinding
 import com.darvdev.ecommerce.domain.model.Product
 import com.darvdev.ecommerce.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -50,20 +54,24 @@ class SearchResultFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.products.observe(viewLifecycleOwner) { productsResult ->
-            when(productsResult) {
-                is UiState.Success -> {
-                    handleLoading(isLoading = false)
-                    handleSuccessSearch(products = productsResult.data)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.productsFlow.collect() { productsResult ->
+                    when(productsResult) {
+                        is UiState.Success -> {
+                            handleLoading(isLoading = false)
+                            handleSuccessSearch(products = productsResult.data)
+                        }
+                        is UiState.Error -> {
+                            handleLoading(isLoading = false)
+                            showEmptyScreen(shouldShow = true, message = getString(R.string.search_result__error_disclaimer))
+                        }
+                        is UiState.Loading -> {
+                            handleLoading(isLoading = true)
+                        }
+                        else -> Unit
+                    }
                 }
-                is UiState.Error -> {
-                    handleLoading(isLoading = false)
-                    showEmptyScreen(shouldShow = true, message = getString(R.string.search_result__error_disclaimer))
-                }
-                is UiState.Loading -> {
-                    handleLoading(isLoading = true)
-                }
-                else -> Unit
             }
         }
     }

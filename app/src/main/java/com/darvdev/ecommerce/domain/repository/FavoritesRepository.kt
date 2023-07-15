@@ -1,11 +1,13 @@
 package com.darvdev.ecommerce.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+
 interface FavoritesRepository {
 
         suspend fun  saveFavorite(id:String)
 
 
-        suspend fun getFavoriteIds(): List<String>
+         fun getFavoriteIds(): Flow<List<String>>
 
         suspend fun deleteFavorite(id:String)
 }
