@@ -4,8 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.darvdev.ecommerce.domain.model.INVALID_PRICE
 import com.darvdev.ecommerce.domain.model.Product
-import com.darvdev.ecommerce.domain.ui.ProductUi
-
 
 
 @Entity
@@ -19,28 +17,14 @@ data class ProductEntity(
     val isFavorite: Boolean = false
 )
 
-fun ProductEntity.mapToProductUi(): ProductUi {
-    return ProductUi(
-        id = id,
-        name = name,
-        brand = brand,
-        price = price,
-        image = image,
-        isFavorite = isFavorite
-    )
-}
-
-fun List<ProductEntity>.mapToProductUiList(): List<ProductUi> {
-    return this.map { it.mapToProductUi() }
-}
-
 fun ProductEntity.mapToProduct(): Product {
     return Product(
         id = id,
         name = name,
         brand = brand,
         price = price,
-        image = image
+        image = image,
+        isFavorite = isFavorite
     )
 }
 

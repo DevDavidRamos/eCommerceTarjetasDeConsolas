@@ -1,7 +1,9 @@
 package com.darvdev.ecommerce.di
 
+import com.darvdev.ecommerce.data.repository.FavoritesRepositoryImpl
 import com.darvdev.ecommerce.data.repository.ProductRepositoryImpl
 import com.darvdev.ecommerce.data.repository.RecentSearchRepositoryImpl
+import com.darvdev.ecommerce.domain.repository.FavoritesRepository
 import com.darvdev.ecommerce.domain.repository.ProductRepository
 import com.darvdev.ecommerce.domain.repository.RecentSearchRepository
 import dagger.Binds
@@ -18,4 +20,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRecentSearchRepository(recentSearchRepository: RecentSearchRepositoryImpl): RecentSearchRepository
+
+    @Binds
+    abstract fun  bindFavoritesRepository(favoritesRepositoryImpl: FavoritesRepositoryImpl): FavoritesRepository
 }

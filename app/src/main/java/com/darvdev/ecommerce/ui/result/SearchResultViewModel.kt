@@ -2,8 +2,8 @@ package com.darvdev.ecommerce.ui.result
 
 import androidx.lifecycle.*
 import com.darvdev.ecommerce.domain.model.Product
+import com.darvdev.ecommerce.domain.repository.FavoritesRepository
 import com.darvdev.ecommerce.domain.usecase.GetProductsByNameQueryUseCase
-import com.darvdev.ecommerce.utils.Resource
 import com.darvdev.ecommerce.utils.UiState
 import com.darvdev.ecommerce.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val getProductsByNameQueryUseCase: GetProductsByNameQueryUseCase,
+    private val favoritesRepository: FavoritesRepository,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -21,9 +22,11 @@ class SearchResultViewModel @Inject constructor(
     val products: LiveData<UiState<List<Product>>>
         get() = _products
 
+    private val query: String
+
     init {
-        val nameQuery = savedStateHandle.get<String>("nameQuery").orEmpty()
-        getProductByNameQuery(nameQuery)
+        query = savedStateHandle.get<String>("nameQuery").orEmpty()
+        getProductByNameQuery(query)
     }
 
     private fun getProductByNameQuery(queryName: String) {
@@ -35,5 +38,22 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
+    fun saveFavorite(id: String) {
+        viewModelScope.launch {
+            favoritesRepository.saveFavorite(id)
+
+            val productsList = getProductsByNameQueryUseCase(query = query)
+            _products.postValue(productsList.mapToUiState())
+        }
+    }
+
+    fun deleteFavorite(id: String) {
+        viewModelScope.launch {
+            favoritesRepository.deleteFavorite(id)
+
+            val productsList = getProductsByNameQueryUseCase(query = query)
+            _products.postValue(productsList.mapToUiState())
+        }
+    }
 
 }

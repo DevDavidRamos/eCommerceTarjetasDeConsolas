@@ -11,8 +11,6 @@ import androidx.navigation.fragment.navArgs
 import com.darvdev.ecommerce.R
 import com.darvdev.ecommerce.databinding.FragmentSearchResultBinding
 import com.darvdev.ecommerce.domain.model.Product
-import com.darvdev.ecommerce.domain.model.mapToProductUiList
-import com.darvdev.ecommerce.utils.Resource
 import com.darvdev.ecommerce.utils.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -92,15 +90,13 @@ class SearchResultFragment : Fragment() {
             showEmptyScreen(shouldShow = true)
         }
 
-        val productsQtyFormatted = "${products.size} resultados"
-        binding.cSearchResultTopBar.tvResultsQty.text = productsQtyFormatted
+        binding.cSearchResultTopBar.tvResultsQty.text = resources.getQuantityString(R.plurals.search_quantity_result, products.size, products.size)
 
-        productAdapter.submitList(products.mapToProductUiList())
+        productAdapter.submitList(products)
     }
 
     private fun showEmptyScreen(message: String? = null, shouldShow: Boolean) {
         binding.lsEmptyScreen.root.visibility = if (shouldShow) View.VISIBLE else View.GONE
-        binding.cSearchResultTopBar.tvResultsQty.text = getString(R.string.empty_state__empty_results)
 
         if (message != null) {
             binding.lsEmptyScreen.tvMessage.text = message
@@ -108,8 +104,19 @@ class SearchResultFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        productAdapter.setProductClickListener {
-            Toast.makeText(requireContext(), it.name, Toast.LENGTH_SHORT).show()
+
+        productAdapter.apply {
+            setProductClickListener {
+                Toast.makeText(requireContext(), it.name, Toast.LENGTH_SHORT).show()
+            }
+
+            setFavoriteClickListener {
+                if (it.isFavorite) {
+                    viewModel.deleteFavorite(it.id)
+                } else {
+                    viewModel.saveFavorite(it.id)
+                }
+            }
         }
 
         binding.cSearchResultTopBar.bSearch.setOnClickListener {

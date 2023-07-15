@@ -5,13 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.darvdev.ecommerce.databinding.FragmentSearchBinding
 import com.darvdev.ecommerce.domain.model.RecentSearch
 import com.darvdev.ecommerce.ui.utils.hideKeyboard
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
